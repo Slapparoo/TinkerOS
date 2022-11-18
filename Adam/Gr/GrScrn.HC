@@ -355,7 +355,7 @@ U0 GrPartialUpdateScaling(U8 *screen)
       dst_row++;
     }
   }
-  MemCpy(gr.screen_cache,screen,GR_HEIGHT*GR_WIDTH);
+  MemCpy64(gr.screen_cache,screen,GR_HEIGHT*GR_WIDTH/8);
 }
 
 
@@ -516,13 +516,13 @@ U0 GrUpdateVGAGraphics()
             dst2[j]=gr_palette[src[j] & 0xff];
         }
       }
-      MemCpy(gr.screen_cache,src_start, text.buffer_size/4);
+      MemCpy64(gr.screen_cache,src_start, text.buffer_size/32);
       if (LETTER_BOX)
         GrDoLetterBox;
       else if (DO_SCALING)
         GrDoFinalScaling;
       else if (FB_WIDTH*4==gr.pitch)
-        MemCpy(text.fb_alias, text.raw_scrn_image, text.buffer_size);
+        MemCpy64(text.fb_alias, text.raw_scrn_image, text.buffer_size/8);
       else
         GrDoLetterBox;
     }
@@ -542,13 +542,13 @@ U0 GrUpdateVGAGraphics()
     size = src + gr.dc2->height * gr.dc2->width_internal;
     while (src < size)
       *dst++ = gr_palette[*src++ & 0xFF] | gr_palette[*src++ & 0xFF] << 32;
-    MemCpy(gr.screen_cache,gr.zoomed_dc->body, text.buffer_size/4);
+    MemCpy64(gr.screen_cache,gr.zoomed_dc->body, text.buffer_size/32);
     if (LETTER_BOX)
       GrDoLetterBox;
     else if (DO_SCALING)
       GrDoFinalScaling;
     else if (FB_WIDTH*4==gr.pitch)
-      MemCpy(text.fb_alias, text.raw_scrn_image, text.buffer_size);
+      MemCpy64(text.fb_alias, text.raw_scrn_image, text.buffer_size/8);
     else
       GrDoLetterBox;
     VGAFlush;
@@ -605,6 +605,8 @@ U0 GrUpdateScrn0()
     GrUpdateTextModeText;
   else
   {
+    DCBlotColor4(gr.dc1->body,gr.dc2->body,gr.dc_cache->body,
+          gr.dc2->height*gr.dc2->width_internal>>3);
     GrUpdateVGAGraphics;
   }
 }
@@ -640,6 +642,8 @@ U0 GrUpdateScrnSeth()
     GrUpdateTextModeText;
   else
   {
+    DCBlotColor4(gr.dc1->body,gr.dc2->body,gr.dc_cache->body,
+          gr.dc2->height*gr.dc2->width_internal>>3);
     GrUpdateVGAGraphics;
   }
 }

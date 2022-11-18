@@ -21,43 +21,43 @@ U0 MPDrawHoreb(CDC *dc2)
       dx=100*tmpo->dx; dy=100*tmpo->dy; dz=100*tmpo->dz;
       Mat4x4MulXYZ(r,&dx,&dy,&dz);
       if (dx<0)
-	tmpo->sym=TRUE;
+        tmpo->sym=TRUE;
       else
-	tmpo->sym=FALSE;
+        tmpo->sym=FALSE;
     }
     if (tmpo->z1>=0) {
       s=100.0/(AbsI64(tmpo->z1)+50);
       if (tmpo->type) {
-	Mat4x4IdentEqu(dc->r);
-	Mat4x4Scale(dc->r,s*2);
-	DCMat4x4Set(dc,dc->r);
-	dc->flags|=DCF_TRANSFORMATION;
-	if (tmpo->sym) {
+        Mat4x4IdentEqu(dc->r);
+        Mat4x4Scale(dc->r,s*2);
+        DCMat4x4Set(dc,dc->r);
+        dc->flags|=DCF_TRANSFORMATION;
+        if (tmpo->sym) {
 	  dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
 	  DCSymmetrySet(dc,s*tmpo->x1+cx,s*tmpo->y1+h,
-		s*tmpo->x1+cx,s*tmpo->y1+h+10);
-	}
-	Sprite3B(dc,s*tmpo->x1+cx,s*tmpo->y1+h,tmpo->z1,imgs[tmpo->type]);
+	        s*tmpo->x1+cx,s*tmpo->y1+h+10);
+        }
+        Sprite3B(dc,s*tmpo->x1+cx,s*tmpo->y1+h,tmpo->z1,imgs[tmpo->type]);
       } else {
-	dc->flags&=~DCF_TRANSFORMATION;
-	dc->color=pebble_colors[tmpo->num&3];
-	GrPlot3(dc,s*tmpo->x1+cx,s*tmpo->y1+h,tmpo->z1);
+        dc->flags&=~DCF_TRANSFORMATION;
+        dc->color=pebble_colors[tmpo->num&3];
+        GrPlot3(dc,s*tmpo->x1+cx,s*tmpo->y1+h,tmpo->z1);
       }
       dc->flags&=~(DCF_SYMMETRY|DCF_JUST_MIRROR);
       if (tmpo==&objs[O_BURNING_BUSH]) {//draw burning bush
-	dc->x=s*tmpo->x1+cx;
-	dc->y=s*tmpo->y1+h;
-	dc->z=tmpo->z1;
-	dc->thick=1;
-	dc->color=winmgr.updates&15;
-	for (j=0;j<45;j++) {
+        dc->x=s*tmpo->x1+cx;
+        dc->y=s*tmpo->y1+h;
+        dc->z=tmpo->z1;
+        dc->thick=1;
+        dc->color=winmgr.updates&15;
+        for (j=0;j<45;j++) {
 	  m=Sqr(Rand); a=2*ã*Rand;
 	  P2R(&x1,&y1,m,a);
 	  m=Sqr(Rand); a=2*ã*Rand;
 	  P2R(&x2,&y2,m,a);
 	  GrLine3(dc,20*x1,20*y1-25,0,20*x2,20*y2-25,0);
-	}
-	if (SqrI64(s*tmpo->x1)+SqrI64(s*tmpo->y1)<300*300)
+        }
+        if (SqrI64(s*tmpo->x1)+SqrI64(s*tmpo->y1)<300*300)
 	  horeb_done=TRUE;
       }
     }

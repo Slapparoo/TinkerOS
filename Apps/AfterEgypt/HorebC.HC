@@ -9,11 +9,11 @@ U0 AnimateTask(I64)
       tmpo=&objs[i];
       if (tmpo->type==OT_SHEEP ||
 	    tmpo->type==OT_GOAT1 || tmpo->type==OT_GOAT2) {
-	tmpo->x+=tmpo->dx;
-	tmpo->y+=tmpo->dy;
-	tmpo->z+=tmpo->dz;
-	tmpo->dx=5*Cos(0.5*t+tmpo->é);
-	tmpo->dz=5*Sin(0.5*t+tmpo->é);
+        tmpo->x+=tmpo->dx;
+        tmpo->y+=tmpo->dy;
+        tmpo->z+=tmpo->dz;
+        tmpo->dx=5*Cos(0.5*t+tmpo->é);
+        tmpo->dz=5*Sin(0.5*t+tmpo->é);
       }
     }
     Sleep(20);
@@ -42,10 +42,10 @@ U0 Init()
       k=0;
       j=RandU32%total;
       while (TRUE) {
-	j-=type_weights[k];
-	if (j<0)
+        j-=type_weights[k];
+        if (j<0)
 	  break;
-	else
+        else
 	  k++;
       }
       tmpo->type=k;
@@ -83,18 +83,18 @@ U0 Horeb()
 {
   I64 sc;
   MenuPush(
-	"File {"
-	"  Abort(,CH_SHIFT_ESC);"
-	"  Exit(,CH_ESC);"
-	"}"
-	"Play {"
-	"  Restart(,'\n');"
-	"  Fwd(,,SC_CURSOR_UP);"
-	"  Bwd(,,SC_CURSOR_DOWN);"
-	"  Left(,,SC_CURSOR_LEFT);"
-	"  Right(,,SC_CURSOR_RIGHT);"
-	"}"
-	);
+        "File {"
+        "  Abort(,CH_SHIFT_ESC);"
+        "  Exit(,CH_ESC);"
+        "}"
+        "Play {"
+        "  Restart(,'\n');"
+        "  Fwd(,,SC_CURSOR_UP);"
+        "  Bwd(,,SC_CURSOR_DOWN);"
+        "  Left(,,SC_CURSOR_LEFT);"
+        "  Right(,,SC_CURSOR_RIGHT);"
+        "}"
+        );
   SettingsPush(Fs,TSF_SAME_SONG); //See $LK,"SettingsPush",A="MN:SettingsPush"$
   try {
     Fs->text_attr=YELLOW<<4+BLUE;
@@ -112,7 +112,7 @@ U0 Horeb()
     Fs->draw_it=&DrawHoreb;
     while (!horeb_done)
       switch (GetKey(&sc)) {
-	case 0:
+        case 0:
 	  switch (sc.u8[0]) {
 	    case SC_CURSOR_LEFT:
 	      Spawn(&AnimateéTask,(-ã/100)(I64),"Animate é",,Fs);
@@ -128,11 +128,11 @@ U0 Horeb()
 	      break;
 	  }
 	  break;
-	case '\n':
+        case '\n':
 	  Init;
 	  break;
-	case CH_SHIFT_ESC:
-	case CH_ESC:
+        case CH_SHIFT_ESC:
+        case CH_ESC:
 	  goto hr_done;
       }
 hr_done: //Don't goto out of try

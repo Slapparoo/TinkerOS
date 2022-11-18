@@ -14,7 +14,8 @@ Cd(__DIR__);;
 #include "ToTXT"
 #include "FileBMP"
 #include "CPURep"
-#include "DevInfo"
-#include "Comm"
 #include "FileXfr"
+#include "MD5"
+#include "TOSClient"
+#include "SethUtil"
 Cd("..");;

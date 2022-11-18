@@ -9,11 +9,23 @@ Bool DrvTypeSet(U8 drv_let,I64 type=FSt_REDSEA)
   switch (bd->type)
   {
   case BDT_ATA:
+  case BDT_AHCI_SATA:
+  case BDT_OTHER:
+  case BDT_SERIAL:
+  case BDT_VIRTUAL:
     offset=0;
     ext_base=INVALID_CLUS;
     while (TRUE)
     {
-      ATAReadBlks(bd,&mbr,offset,1);
+      if ( bd->type>=BDT_OTHER)
+      {
+        if (bd->read_func)
+          (*bd->read_func)(&mbr, offset, 1);
+      }
+      else if (BDT_ATA==bd->type)
+        ATAReadBlks(bd,&mbr,offset,1);
+      else
+        AHCIAtaBlksRead(bd, &mbr, offset, 1);
       j=-1;
       for (i=0; i<4; i++)
       {
@@ -38,7 +50,15 @@ Bool DrvTypeSet(U8 drv_let,I64 type=FSt_REDSEA)
                 throw('Drv');
               }
               mbr.p[i].active=0x80;
-              ATAWriteBlks(bd,&mbr,offset,1);
+              if ( bd->type>=BDT_OTHER)
+              {
+                if (bd->write_func)
+                  (*bd->write_func)(&mbr, offset, 1);
+              }
+              else if (BDT_ATA==bd->type)
+                ATAWriteBlks(bd,&mbr,offset,1);
+              else
+                AHCIAtaBlksWrite(bd, &mbr, offset, 1);
               return TRUE;
             }
             drv_num++;
@@ -79,7 +99,7 @@ U0 Fmt(I64 drv_let,Bool quick=TRUE,Bool confirm=TRUE,I64 type=FSt_FAT32)
   switch (type)
   {
   case FSt_FAT32:
-    if (dv->bd->type==BDT_ATA)
+    if (dv->bd->type==BDT_ATA || dv->bd->type==BDT_AHCI_SATA)
     {
       Silent;
       Drv(drv_let);
@@ -89,8 +109,14 @@ U0 Fmt(I64 drv_let,Bool quick=TRUE,Bool confirm=TRUE,I64 type=FSt_FAT32)
       Drv(drv_let);
       break;
     }
-    "Using RedSea File System.\n";
+    else
+    {
+      "Error: Formating only supported for block device types BDT_ATA and BDT_AHCI_SATA at this time.\n";
+      return;
+    }
   case FSt_REDSEA:
+    "Using RedSea File System.\n"
+    ;
     Silent;
     Drv(drv_let);
     Silent(old_silent);

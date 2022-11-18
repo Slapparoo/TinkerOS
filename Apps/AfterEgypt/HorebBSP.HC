@@ -8,9 +8,9 @@ I64 ObjCompare(Obj *o1,Obj *o2)
 U0 DrawHoreb(CTask *task,CDC *dc)
 {
   I64 i,j,x,y,z,dx,dy,dz,
-	w=task->pix_width,
-	h=task->pix_height+480-GR_HEIGHT,r[16],
-	cx=w>>1,cy=h>>1;
+        w=task->pix_width,
+        h=task->pix_height+480-GR_HEIGHT,r[16],
+        cx=w>>1,cy=h>>1;
   F64 s,m,a,x1,y1,x2,y2;
   Obj *o_sort[O_OBJS_NUM+O_PEBBLES_NUM],*tmpo;
 
@@ -39,9 +39,9 @@ U0 DrawHoreb(CTask *task,CDC *dc)
       dx=100*tmpo->dx; dy=100*tmpo->dy; dz=100*tmpo->dz;
       Mat4x4MulXYZ(r,&dx,&dy,&dz);
       if (dx<0)
-	tmpo->sym=TRUE;
+        tmpo->sym=TRUE;
       else
-	tmpo->sym=FALSE;
+        tmpo->sym=FALSE;
     }
   }
   QSortI64(o_sort,O_OBJS_NUM+O_PEBBLES_NUM,&ObjCompare);
@@ -56,8 +56,8 @@ U0 DrawHoreb(CTask *task,CDC *dc)
       DCMat4x4Set(dc,dc->r);
       dc->flags|=DCF_TRANSFORMATION;
       if (tmpo->sym) {
-	dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
-	DCSymmetrySet(dc,s*tmpo->x1+cx,s*tmpo->y1+h,
+        dc->flags|=DCF_SYMMETRY|DCF_JUST_MIRROR;
+        DCSymmetrySet(dc,s*tmpo->x1+cx,s*tmpo->y1+h,
 	      s*tmpo->x1+cx,s*tmpo->y1+h+10);
       }
       Sprite3B(dc,s*tmpo->x1+cx,s*tmpo->y1+h,0,imgs[tmpo->type]);
@@ -75,15 +75,15 @@ U0 DrawHoreb(CTask *task,CDC *dc)
       dc->thick=1;
       dc->color=winmgr.updates&15;
       for (j=0;j<45;j++) {
-	m=Sqr(Rand); a=2*ã*Rand;
-	P2R(&x1,&y1,m,a);
-	m=Sqr(Rand); a=2*ã*Rand;
-	P2R(&x2,&y2,m,a);
-	GrLine3(dc,20*x1,20*y1-25,0,20*x2,20*y2-25,0);
+        m=Sqr(Rand); a=2*ã*Rand;
+        P2R(&x1,&y1,m,a);
+        m=Sqr(Rand); a=2*ã*Rand;
+        P2R(&x2,&y2,m,a);
+        GrLine3(dc,20*x1,20*y1-25,0,20*x2,20*y2-25,0);
       }
 
       if (SqrI64(s*tmpo->x1)+SqrI64(s*tmpo->y1)<300*300)
-	horeb_done=TRUE;
+        horeb_done=TRUE;
     }
   }
 

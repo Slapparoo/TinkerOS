@@ -167,6 +167,8 @@ public _extern _MEMCMP I64 MemCmp(
 	U8 *ptr1,U8 *ptr2,I64 cnt); //Compare chunk of memory.
 public _extern _MEMCPY U8 *MemCpy(
 	U8 *dst,U8 *src,I64 cnt); //Copy chunk of memory. Only goes fwd.
+public _extern _MEMCPY64 U8 *MemCpy64(
+	U8 *dst,U8 *src,I64 cnt); //Copy 64-bit blocks of memory. Only goes fwd.
 public _extern _MEMSET U8 *MemSet(
 	U8 *dst,I64 val,I64 cnt); //Set chunk of U8s to value.
 public _extern _MEMSET_I64 I64 *MemSetI64(
@@ -293,5 +295,6 @@ public _intern IC_RDTSC I64 GetTSC(); //Get time stamp counter.
 
 #help_index "Graphics"
 public _extern SYS_FRAME_BUFFER U32 sys_frame_buffer;
+public _extern SYS_VBE_MODE_PITCH U16 sys_vbe_mode_pitch;
 
 #help_index ""

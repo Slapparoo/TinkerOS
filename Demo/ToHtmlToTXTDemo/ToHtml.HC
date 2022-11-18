@@ -12,7 +12,7 @@ U0 HtmlPutS(CDoc *doc,I64 u32_attr,I64 *_old_u32_attr,Bool underline_update,
   if (u32_attr&DOCET_INVERT)
     u32_attr.u8[1]=(u32_attr.u8[1]&15)<<4|u32_attr.u8[1]>>4;
   if (underline_update &&
-	!(u32_attr&DOCET_UNDERLINE) && *_old_u32_attr&DOCET_UNDERLINE) {
+        !(u32_attr&DOCET_UNDERLINE) && *_old_u32_attr&DOCET_UNDERLINE) {
     if (!(*_old_u32_attr&DOCET_LINK_UNDERLINE))
       DocPrint(doc,"</u>");
     *_old_u32_attr&=~DOCET_LINK_UNDERLINE;
@@ -39,41 +39,41 @@ U0 HtmlPutS(CDoc *doc,I64 u32_attr,I64 *_old_u32_attr,Bool underline_update,
   while (ch=*st++) {
     switch (ch) {
       case '\t':
-	do {
+        do {
 	  DocPutKey(doc,CH_SPACE,0);
 	  *_col=*_col+1;
-	} while (*_col&7);
-	break;
+        } while (*_col&7);
+        break;
 
       start:
-	case 'ã':	ptr="pi";	break;
-	case 'é':	ptr="theta";	break;
-	case 'è':	ptr="phi";	break;
-	case 'ê':	ptr="omega";	break;
-	case 'ì':	ptr="inf";	break;
-	case 'æ':	ptr="u";	break;
+        case 'ã':	ptr="pi";	break;
+        case 'é':	ptr="theta";	break;
+        case 'è':	ptr="phi";	break;
+        case 'ê':	ptr="omega";	break;
+        case 'ì':	ptr="inf";	break;
+        case 'æ':	ptr="u";	break;
       end:
-	DocPrint(doc,ptr);
-	*_col=*_col+StrLen(ptr);
-	break;
+        DocPrint(doc,ptr);
+        *_col=*_col+StrLen(ptr);
+        break;
 
       start:
-	case CH_SHIFT_SPACE: ptr="";	break;
-	case '&':	ptr="&amp;";	break;
-	case '<':	ptr="&lt;";	break;
-	case '>':	ptr="&gt;";	break;
-	case '"':	ptr="&quot;";	break;
+        case CH_SHIFT_SPACE: ptr="";	break;
+        case '&':	ptr="&amp;";	break;
+        case '<':	ptr="&lt;";	break;
+        case '>':	ptr="&gt;";	break;
+        case '"':	ptr="&quot;";	break;
       end:
-	DocPrint(doc,ptr);
-	*_col=*_col+1;
-	break;
+        DocPrint(doc,ptr);
+        *_col=*_col+1;
+        break;
 
       default:
-	if (CH_SPACE<=ch<0x7F || ch=='\n')
+        if (CH_SPACE<=ch<0x7F || ch=='\n')
 	  DocPutKey(doc,ch,0);
-	else
+        else
 	  DocPrint(doc,".");
-	*_col=*_col+1;
+        *_col=*_col+1;
     }
   }
 }
@@ -123,8 +123,8 @@ U8 *TOSLinkCvt1(U8 *link_st)
       case LK_FILE_LINE:
       case LK_PLAIN_LINE:
       case LK_FILE:
-	res=TOSLinkCvt2(filename,num);
-	break;
+        res=TOSLinkCvt2(filename,num);
+        break;
       case -1:
       case LK_DEF:
       case LK_HELP_INDEX:
@@ -132,18 +132,18 @@ U8 *TOSLinkCvt1(U8 *link_st)
       case LK_DOC_ANCHOR:
       case LK_DOC_FIND:
       case LK_DOC_LINE:
-	break;
+        break;
       case LK_BIBLE_FIND:
-	while (LBts(&locks,0))
+        while (LBts(&locks,0))
 	  Yield;
-	if (!bible)
+        if (!bible)
 	  bible=Adam("DocRead(\"%s\");",filename);
-	if (DocFind(bible,num,needle))
+        if (DocFind(bible,num,needle))
 	  res=URLBibleGateway(link_st);
-	LBtr(&locks,0);
-	break;
+        LBtr(&locks,0);
+        break;
       default:
-	if (DocFileEd(i,filename,needle,&num,EDF_UNCOLLAPSE|EDF_BAIL))
+        if (DocFileEd(i,filename,needle,&num,EDF_UNCOLLAPSE|EDF_BAIL))
 	  res=TOSLinkCvt2(filename,num);
     }
     Free(filename);
@@ -184,7 +184,7 @@ public CDoc *Doc2Html(CDoc *doc_in,U8 *html_header=NULL,U8 *body_header=NULL,
 	  "<head>\n"
 	  "<meta http-equiv=\"Content-Type\" "
 	  "content=\"text/html;charset=US-ASCII\">\n"
-	  "<meta name=\"generator\" content=\"$TX,"TinkerOS V5.05",D="DD_OS_NAME_VERSION"$\">\n";
+	  "<meta name=\"generator\" content=\"$TX,"TinkerOS V5.07",D="DD_OS_NAME_VERSION"$\">\n";
   if (!body_header) body_header=
 	  "<body>\n"
 	  "<pre style=\"font-family:courier;font-size:10pt\">\n";
@@ -198,8 +198,8 @@ public CDoc *Doc2Html(CDoc *doc_in,U8 *html_header=NULL,U8 *body_header=NULL,
   DocPrint(doc_out,"<style type=\"text/css\">\n");
   style=doc_out->cur_entry->last;
   DocPrint(doc_out,
-	"</style>\n"
-	"</head>\n");
+        "</style>\n"
+        "</head>\n");
   DocPrint(doc_out,"%s",body_header);
 
   doc_e=doc_in->head.next;
@@ -208,61 +208,61 @@ public CDoc *Doc2Html(CDoc *doc_in,U8 *html_header=NULL,U8 *body_header=NULL,
   while (doc_e!=doc_in) {
     if (!(doc_e->de_flags&DOCEF_SKIP)) {
       if (y!=old_y) {
-	if (line_anchors)
+        if (line_anchors)
 	  DocPrint(doc_out,"<a name=\"l%d\"></a>",y+1);
-	if (line_nums)
+        if (line_nums)
 	  DocPrint(doc_out,"%0*d",digits,y+1);
-	old_y=y;
+        old_y=y;
       }
       while (y<doc_e->y) {
-	HtmlPutS(doc_out,doc_e->settings.final_u32_attr,&old_u32_attr,FALSE,
+        HtmlPutS(doc_out,doc_e->settings.final_u32_attr,&old_u32_attr,FALSE,
 	      "\n",&col,style_bitmap);
-	if (++y!=old_y) {
+        if (++y!=old_y) {
 	  if (line_anchors)
 	    DocPrint(doc_out,"<a name=\"l%d\"></a>",y+1);
 	  if (line_nums)
 	    DocPrint(doc_out,"%0*d",digits,y+1);
 	  old_y=y;
-	}
-	col=0;
+        }
+        col=0;
       }
 
       no_bwd=TRUE;
       doc_e2=doc_e->next;
       while (doc_e2!=doc_in && doc_e2->y==doc_e->y) {
-	if (doc_e2->x<doc_e->x) {
+        if (doc_e2->x<doc_e->x) {
 	  no_bwd=FALSE;
 	  break;
-	}
-	doc_e2=doc_e2->next;
+        }
+        doc_e2=doc_e2->next;
       }
 
       if (no_bwd)
-	while (col<doc_e->x)
+        while (col<doc_e->x)
 	  HtmlPutS(doc_out,doc_e->settings.final_u32_attr&~DOCET_UNDERLINE,
-		&old_u32_attr,TRUE,"",&col,style_bitmap);
+	        &old_u32_attr,TRUE,"",&col,style_bitmap);
 
       link_st=NULL;
       if (doc_e->de_flags&DOCEF_HTML_LINK)
-	link_st=StrNew(doc_e->html_link);
+        link_st=StrNew(doc_e->html_link);
       else if (st=DocEntryLink(doc_in,doc_e)) {
-	link_st=link_cvt(st);
-	Free(st);
+        link_st=link_cvt(st);
+        Free(st);
       }
 
       if (link_st) {
-	if (old_u32_attr&DOCET_UNDERLINE &&!(old_u32_attr&DOCET_LINK_UNDERLINE))
+        if (old_u32_attr&DOCET_UNDERLINE &&!(old_u32_attr&DOCET_LINK_UNDERLINE))
 	  DocPrint(doc_out,"</u>");
-	if (old_u32_attr&DOCET_BLINK)
+        if (old_u32_attr&DOCET_BLINK)
 	  DocPrint(doc_out,"</blink>");
-	if (!(old_u32_attr&DOCET_UNDEF_COLOR))
+        if (!(old_u32_attr&DOCET_UNDEF_COLOR))
 	  DocPrint(doc_out,"</span>");
-	old_u32_attr=DOCET_UNDEF_COLOR|DOCET_UNDERLINE|DOCET_LINK_UNDERLINE;
-	DocPrint(doc_out,"<a href=\"%s\">",link_st);
+        old_u32_attr=DOCET_UNDEF_COLOR|DOCET_UNDERLINE|DOCET_LINK_UNDERLINE;
+        DocPrint(doc_out,"<a href=\"%s\">",link_st);
       }
 
       switch (doc_e->type_u8) {
-	case DOCT_TEXT:
+        case DOCT_TEXT:
 	  if (doc_e->de_flags&DOCEF_HIGHLIGHT) {
 	    if (doc_e->last==doc_in)
 	      MemCpy(&doc_e->settings,&doc_in->settings_head,
@@ -282,13 +282,13 @@ public CDoc *Doc2Html(CDoc *doc_in,U8 *html_header=NULL,U8 *body_header=NULL,
 	    HtmlPutS(doc_out,doc_e->settings.final_u32_attr,
 		  &old_u32_attr,TRUE,doc_e->tag,&col,style_bitmap);
 	  break;
-	case DOCT_TAB:
+        case DOCT_TAB:
 	  HtmlPutS(doc_out,doc_e->settings.final_u32_attr,&old_u32_attr,TRUE,
-		"\t",&col,style_bitmap);
+	        "\t",&col,style_bitmap);
 	  break;
-	case DOCT_HTML_CODE:
+        case DOCT_HTML_CODE:
 	  if (old_u32_attr&DOCET_UNDERLINE &&
-		!(old_u32_attr&DOCET_LINK_UNDERLINE))
+	        !(old_u32_attr&DOCET_LINK_UNDERLINE))
 	    DocPrint(doc_out,"</u>");
 	  if (old_u32_attr&DOCET_BLINK)
 	    DocPrint(doc_out,"</blink>");
@@ -297,28 +297,28 @@ public CDoc *Doc2Html(CDoc *doc_in,U8 *html_header=NULL,U8 *body_header=NULL,
 	  old_u32_attr=DOCET_UNDEF_COLOR;
 	  DocPrint(doc_out,"%s",doc_e->tag);
 	  break;
-	case DOCT_SPRITE:
+        case DOCT_SPRITE:
 	  HtmlPutS(doc_out,doc_e->settings.final_u32_attr,
-		&old_u32_attr,TRUE,doc_e->tag,&col,style_bitmap);
+	        &old_u32_attr,TRUE,doc_e->tag,&col,style_bitmap);
 	  HtmlPutS(doc_out,doc_e->settings.final_u32_attr,
-		&old_u32_attr,TRUE,"/* Graphics Not Rendered in HTML */",
-		&col,style_bitmap);
+	        &old_u32_attr,TRUE,"/* Graphics Not Rendered in HTML */",
+	        &col,style_bitmap);
 	  break;
-	default:
+        default:
 	  if (doc_e->de_flags&DOCEF_TAG)
 	    HtmlPutS(doc_out,doc_e->settings.final_u32_attr,
 		  &old_u32_attr,TRUE,doc_e->tag,&col,style_bitmap);
       }
       if (link_st) {
-	if (old_u32_attr&DOCET_UNDERLINE &&!(old_u32_attr&DOCET_LINK_UNDERLINE))
+        if (old_u32_attr&DOCET_UNDERLINE &&!(old_u32_attr&DOCET_LINK_UNDERLINE))
 	  DocPrint(doc_out,"</u>");
-	if (old_u32_attr&DOCET_BLINK)
+        if (old_u32_attr&DOCET_BLINK)
 	  DocPrint(doc_out,"</blink>");
-	if (!(old_u32_attr&DOCET_UNDEF_COLOR))
+        if (!(old_u32_attr&DOCET_UNDEF_COLOR))
 	  DocPrint(doc_out,"</span>");
-	DocPrint(doc_out,"</a>");
-	old_u32_attr=DOCET_UNDEF_COLOR|DOCET_UNDERLINE|DOCET_LINK_UNDERLINE;
-	Free(link_st);
+        DocPrint(doc_out,"</a>");
+        old_u32_attr=DOCET_UNDEF_COLOR|DOCET_UNDERLINE|DOCET_LINK_UNDERLINE;
+        Free(link_st);
       }
     }
     doc_e=doc_e->next;
@@ -376,7 +376,7 @@ public U0 ToHtml(U8 *_in_name,U8 *_out_name=NULL,U8 *html_header=NULL,
 
   doc_in=DocRead(in_name);
   doc_out=Doc2Html(doc_in,html_header,body_header,body_footer,html_footer,
-	line_anchors,link_cvt,line_nums);
+        line_anchors,link_cvt,line_nums);
   StrCpy(&doc_out->filename.name,out_name);
 
   SettingsPop;
